@@ -1,0 +1,7 @@
+# Hindi content requires review from the designated Hindi field leader.
+#
+# PLACEHOLDER BELOW: @hindi-reviewer-github is not a real GitHub account.
+# It MUST be replaced with the actual designated Hindi field leader's GitHub
+# username before any pull request touching content/hi/ is accepted.
+# Until replaced, treat all content/hi/ PRs as blocked.
+/content/hi/  @landofawzai @hindi-reviewer-github

@@ -1,0 +1,12 @@
+[en]
+languageCode = "en"
+languageName = "English"
+weight = 1
+contentDir = "content/en"
+
+[hi]
+languageCode = "hi"
+languageName = "हिन्दी"
+weight = 2
+contentDir = "content/hi"
+disabled = true    # flip to false in Phase 2

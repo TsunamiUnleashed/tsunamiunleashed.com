@@ -1,0 +1,9 @@
+node_modules/
+public/
+resources/
+.hugo_build.lock
+*.minisig.tmp
+/tsunami.key
+
+# Spec deviation: Claude Code IDE session metadata — never commit.
+.claude/

@@ -1,0 +1,18 @@
+# Spec deviation (added at 6.7): guarantee stable line endings across platforms
+# so LICENSE byte hashes and signed-manifest verification remain reproducible.
+
+* text=auto
+
+# Keep LICENSE verbatim LF-only — its published SHA-256 is a canonical anchor.
+LICENSE text eol=lf
+
+# Scripts must be LF so they run on Linux CI.
+*.sh text eol=lf
+
+# Binaries should never be line-ending normalized.
+*.png binary
+*.woff2 binary
+*.pdf binary
+*.zim binary
+*.mp3 binary
+*.mp4 binary
