@@ -1,0 +1,6 @@
+{{ $tier := .Params.tier | default 1 }}
+{{ $data := index site.Data.tiers.tier (sub $tier 1) }}
+<span class="tier-badge {{ $data.class }}" title="{{ $data.desc }}">
+  <span class="tier-glyph">{{ $data.glyph }}</span>
+  <span class="tier-label">{{ $data.label }}</span>
+</span>

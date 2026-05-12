@@ -1,0 +1,14 @@
+{{/*
+  print-cards: renders all /cards/ content in weight order, wrapped in
+  a container whose class determines the paper layout via print.css.
+  Usage: {{< print-cards wrapper="print-field-guide" >}}
+*/}}
+{{- $wrapper := .Get "wrapper" | default "print-card-set" -}}
+<div class="{{ $wrapper }}">
+{{- range (where site.RegularPages "Section" "cards").ByWeight }}
+<article class="print-card" id="{{ .Params.slug }}" data-tier="{{ .Params.tier }}">
+  <h2>{{ .Title }}</h2>
+  {{ .Content }}
+</article>
+{{- end }}
+</div>

@@ -1,0 +1,6 @@
+{{- $ref := .Get "ref" -}}
+{{- $text := .Inner -}}
+<blockquote class="verse" lang="{{ $.Page.Lang }}">
+  <p>{{ $text | safeHTML }}</p>
+  <cite>— {{ $ref }} (NIV)</cite>
+</blockquote>

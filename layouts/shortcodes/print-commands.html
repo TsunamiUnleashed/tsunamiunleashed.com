@@ -1,0 +1,12 @@
+{{/*
+  print-commands: renders all /commands/ content in weight order, wrapped
+  in the .print-command-set container for the A4 8GC sheet.
+*/}}
+<div class="print-command-set">
+{{- range (where site.RegularPages "Section" "commands").ByWeight }}
+<article class="print-command" id="{{ .Params.slug }}" data-tier="{{ .Params.tier }}">
+  <h2>{{ .Title }}</h2>
+  {{ .Content }}
+</article>
+{{- end }}
+</div>

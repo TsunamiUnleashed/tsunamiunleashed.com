@@ -1,0 +1,70 @@
+name: ci
+on:
+  pull_request:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.160.1'
+          extended: true
+
+      - name: Build site
+        run: hugo --minify
+
+      - name: Check for 'church' in rendered output
+        run: |
+          if grep -rI --include="*.html" -w "church" public/ | grep -v "<!--" ; then
+            echo "ERROR: word 'church' found in rendered output." >&2
+            exit 1
+          fi
+
+      - name: Check for donation language
+        run: |
+          if grep -rI --include="*.html" -iE "(donate|support us|give to|help fund)" public/; then
+            echo "ERROR: solicitation language found." >&2
+            exit 1
+          fi
+
+      # Rule A: every content/**/*.md has license: CC0-1.0
+      - name: Check all Markdown files have CC0 license front matter
+        run: |
+          fail=0
+          while IFS= read -r -d '' f; do
+            if ! grep -qE '^license:[[:space:]]*"?CC0-1\.0"?[[:space:]]*$' "$f"; then
+              echo "ERROR: $f missing 'license: CC0-1.0' in front matter." >&2
+              fail=1
+            fi
+          done < <(find content/ -name "*.md" -print0)
+          [ "$fail" -eq 0 ] || exit 1
+
+      # Rule B: every non-_index.md has non-blank canonRef
+      - name: Check non-_index.md files have non-blank canonRef
+        run: |
+          fail=0
+          while IFS= read -r -d '' f; do
+            [ "$(basename "$f")" = "_index.md" ] && continue
+            v=$(awk -F': ' '/^canonRef:/ {print $2; exit}' "$f" | tr -d '[:space:]')
+            if [ -z "$v" ] || [ "$v" = '""' ] || [ "$v" = "''" ]; then
+              echo "ERROR: $f has blank or missing canonRef (got: '$v')." >&2
+              fail=1
+            fi
+          done < <(find content/ -name "*.md" -print0)
+          [ "$fail" -eq 0 ] || exit 1
+
+      # Rule C: every non-_index.md has tier in {1,2,3,4}
+      - name: Check non-_index.md files have tier 1..4
+        run: |
+          fail=0
+          while IFS= read -r -d '' f; do
+            [ "$(basename "$f")" = "_index.md" ] && continue
+            v=$(awk '/^tier:/ {print $2; exit}' "$f")
+            if [[ ! "$v" =~ ^[1-4]$ ]]; then
+              echo "ERROR: $f missing or invalid tier (got: '$v', expected 1..4)." >&2
+              fail=1
+            fi
+          done < <(find content/ -name "*.md" -print0)
+          [ "$fail" -eq 0 ] || exit 1

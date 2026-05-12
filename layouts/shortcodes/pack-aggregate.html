@@ -1,0 +1,25 @@
+{{/*
+  pack-aggregate: renders every Tier 1 and Tier 2 page in /cards/,
+  /commands/, and /verses/ inline, in weight order, as a single scroll.
+  Consumed by scripts/bundle-html.sh via monolith at /pack/.
+*/}}
+{{- range (where (where site.RegularPages "Section" "cards") "Params.tier" "<=" 2).ByWeight }}
+<article class="pack-entry pack-entry-card" id="{{ .Params.slug }}" data-tier="{{ .Params.tier }}">
+  <h2>{{ .Title }}</h2>
+  {{ .Content }}
+</article>
+{{- end }}
+
+{{- range (where (where site.RegularPages "Section" "commands") "Params.tier" "<=" 2).ByWeight }}
+<article class="pack-entry pack-entry-command" id="{{ .Params.slug }}" data-tier="{{ .Params.tier }}">
+  <h2>{{ .Title }}</h2>
+  {{ .Content }}
+</article>
+{{- end }}
+
+{{- range (where (where site.RegularPages "Section" "verses") "Params.tier" "<=" 2).ByWeight }}
+<article class="pack-entry pack-entry-verse" id="{{ .Params.slug }}" data-tier="{{ .Params.tier }}">
+  <h2>{{ .Title }}</h2>
+  {{ .Content }}
+</article>
+{{- end }}

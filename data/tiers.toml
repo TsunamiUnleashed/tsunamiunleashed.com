@@ -1,0 +1,27 @@
+[[tier]]
+n = 1
+glyph = "★"
+label = "Core"
+class = "tier-1"
+desc = "Dirt-drawable. Memorize this."
+
+[[tier]]
+n = 2
+glyph = "★★"
+label = "Practice"
+class = "tier-2"
+desc = "How to use the core in real life."
+
+[[tier]]
+n = 3
+glyph = "★★★"
+label = "Deeper"
+class = "tier-3"
+desc = "For coaches and trainers."
+
+[[tier]]
+n = 4
+glyph = "★★★★"
+label = "Background"
+class = "tier-4"
+desc = "Scholarly context."

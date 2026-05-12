@@ -1,0 +1,8 @@
+{{/*
+  print-css: injects a <link> to the processed assets/css/print.css.
+  Used by /print/... content pages so their HTML is fully self-contained
+  (no dependency on a site-wide baseof.html stylesheet include).
+*/}}
+{{- with resources.Get "css/print.css" -}}
+<link rel="stylesheet" href="{{ .RelPermalink }}">
+{{- end -}}

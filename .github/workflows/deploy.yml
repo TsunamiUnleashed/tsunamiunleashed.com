@@ -1,0 +1,92 @@
+name: deploy
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.160.1'
+          extended: true
+
+      - name: Install tools
+        run: |
+          cargo install monolith --locked
+          npm install -g pagedjs-cli workbox-cli
+          curl -sSfL \
+            https://github.com/jedisct1/minisign/releases/latest/download/minisign-linux-x86_64.tar.gz \
+            | tar xz && sudo mv minisign /usr/local/bin/
+
+      - name: Build site
+        run: hugo --minify
+
+      - name: Run local server for bundle scripts
+        run: (cd public && python3 -m http.server 8080 &) && sleep 3
+
+      - name: Generate bundles
+        run: |
+          bash scripts/bundle-html.sh
+          bash scripts/bundle-pdf.sh
+
+      - name: Generate service worker
+        run: workbox generateSW workbox-config.js
+
+      - name: Generate and sign manifest
+        env:
+          MINISIGN_SECRET_KEY: ${{ secrets.MINISIGN_SECRET_KEY }}
+        run: |
+          bash scripts/manifest.sh
+          bash scripts/sign.sh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: public/
+
+  deploy-github-pages:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: public/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public/
+      - uses: actions/deploy-pages@v4
+
+  deploy-cloudflare-pages:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: public/
+      - uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          projectName: tsunamiunleashed
+          directory: public
+
+  archive:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Wayback save
+        run: |
+          curl -sS "https://web.archive.org/save/https://tsunamiunleashed.com/" || true

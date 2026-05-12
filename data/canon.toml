@@ -1,0 +1,59 @@
+# Canon-authoritative structured data for the 8 General Commands and Three Verses.
+# Source of truth: content/en/cards/card-c.md (8GC) and content/en/cards/card-b.md (Three Verses).
+# Wording deviates from spec §7.3 example where the example drifted from canon — canon wins.
+# See memory: project_8gc_canon_override.md.
+
+[[commands]]
+number = 1
+title = "Love God"
+refs = ["Mt 22:37", "Lk 10:25–28", "Lk 10:38–42"]
+
+[[commands]]
+number = 2
+title = "Love Neighbors, Love Enemies, Love Believers"
+refs = ["Mt 22:39", "Lk 6:27–35", "Jn 13:34–35"]
+
+[[commands]]
+number = 3
+title = "Believe in Jesus, Repent, Receive the Holy Spirit"
+refs = ["Mk 1:14–15", "Jn 20:19–22"]
+
+[[commands]]
+number = 4
+title = "Baptize"
+refs = ["Mt 28:19", "Ac 8:26–40"]
+
+[[commands]]
+number = 5
+title = "Lord's Supper"
+refs = ["Lk 22:14–20", "Lk 24:13–35"]
+
+[[commands]]
+number = 6
+title = "Pray in the Name of Jesus"
+refs = ["Lk 11:1–13", "Jn 14:13–14"]
+
+[[commands]]
+number = 7
+title = "Give Generously"
+refs = ["Mk 12:41–44"]
+
+[[commands]]
+number = 8
+title = "Make Disciples"
+refs = ["Mt 28:16–20", "Lk 10:1–9", "2 Ti 2:2"]
+
+[[three_verses]]
+label = "See"
+ref = "John 3:16"
+theme = "God's Love"
+
+[[three_verses]]
+label = "Shift"
+ref = "John 1:12–13"
+theme = "Becoming His Child"
+
+[[three_verses]]
+label = "Sift"
+ref = "Matthew 22:37–40"
+theme = "God Is First"

@@ -1,0 +1,69 @@
+/* Print stylesheet for the PDF bundle outputs in scripts/bundle-pdf.sh.
+   Consumed by pagedjs-cli via the /print/... pages. Named-@page rules
+   map each print page to its paper size. */
+
+@page {
+  margin: 2cm;
+  @bottom-center {
+    content: counter(page);
+    font-size: 9pt;
+    color: #666;
+  }
+}
+
+/* A5 book — /print/field-guide/ */
+.print-field-guide {
+  page: fieldguide;
+}
+@page fieldguide {
+  size: A5 portrait;
+  margin: 1.5cm 1.2cm;
+}
+
+/* A4 portrait — /print/cards/ bookmark-card sheet */
+.print-bookmark-cards {
+  page: bookmarkcards;
+}
+@page bookmarkcards {
+  size: A4 portrait;
+  margin: 1cm;
+}
+
+/* A4 portrait — /print/commands/ 8GC reference */
+.print-command-set {
+  page: commandset;
+}
+@page commandset {
+  size: A4 portrait;
+  margin: 2cm;
+}
+
+/* Each card / command starts on a fresh page; first one inherits page start. */
+.print-card,
+.print-command {
+  break-before: page;
+  page-break-before: always;
+}
+
+.print-card:first-child,
+.print-command:first-child {
+  break-before: auto;
+  page-break-before: auto;
+}
+
+/* Keep headings with their following content. */
+h1, h2, h3 {
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+/* Don't split a verse blockquote across pages. */
+.verse {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* Hide on-screen chrome when printing. */
+nav, aside, header, footer, .tile-strip, .sidebar, .topbar {
+  display: none !important;
+}
